@@ -3,18 +3,19 @@ require 'spec_helper'
 describe ApplicationHelper do
 
   describe "full_title" do
-    it "should include the page title" do
-      expect(full_title("foo")).to match(/foo/)
+    context 'when page_title is any old thing and not empty' do
+      let(:page_title) { 'foo' }
+      
+      it "should include the page title" do
+        expect(full_title(page_title)).to eq "Ruby on Rails Tutorial Sample App | foo"
+      end
     end
-
-    it "should include the base title" do
-      expect(full_title("foo")).to match(/^Ruby on Rails Tutorial Sample App/)
-    end
-
-    it "should not include a bar for the home page" do
-      expect(full_title("Ruby on Rails Tutorial Sample App")).not_to match(/\|/)
+    context 'when page_title is empty' do
+      let(:page_title) { '' }
+      
+      it "is just the base title" do
+        expect(full_title("")).not_to match(/\|/)
+      end
     end
   end
 end
-
-
