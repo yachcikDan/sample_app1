@@ -21,13 +21,22 @@ describe "User pages" do
   
   describe "signup" do
 
-      before { visit signup_path }
+    before { visit signup_path }
 
-      let(:submit) { "Create my account" }
+    let(:submit) { "Create my account" }
 
-      describe "with invalid information" do
-        it "should not create a user" do
-          expect { click_button submit }.not_to change(User, :count)
+    describe "with invalid information" do
+      it "should not create a user" do
+        expect { click_button submit }.not_to change(User, :count)
+      end
+      describe "after submission" do
+        before { click_button submit }
+          it { should have_content('error') } 
+          it { should have_content('Name can\'t be blank') }
+          it { should have_content('Email can\'t be blank') }
+          it { should have_content('Email is invalid') }
+          it { should have_content('Password can\'t be blank') }
+          it { should have_content('Password is too short (minimum is 6 characters)') }
         end
       end
 
@@ -37,10 +46,10 @@ describe "User pages" do
           fill_in "Email",        with: "user@example.com"
           fill_in "Password",     with: "foobar"
           fill_in "Confirmation", with: "foobar"
-        end
+      end
 
-        it "should create a user" do
-          expect { click_button submit }.to change(User, :count).by(1)
+      it "should create a user" do
+        expect { click_button submit }.to change(User, :count).by(1)
       end
     end
   end
